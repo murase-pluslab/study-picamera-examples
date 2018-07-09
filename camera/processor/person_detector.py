@@ -22,8 +22,8 @@ class PersonDetector(object):
         self.vs.stop()
 
     def flip_if_needed(self, frame):
-        if self.flip:
-            return np.flip(frame, 0)
+#         if self.flip:
+#             return np.flip(frame, 0)
         return frame
 
     def get_frame(self):
@@ -33,6 +33,7 @@ class PersonDetector(object):
         return jpeg.tobytes()
 
     def process_image(self, frame):
+        persons = 0
         frame = imutils.resize(frame, width=300)
         (h, w) = frame.shape[:2]
         blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
