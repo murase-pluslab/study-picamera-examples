@@ -3,7 +3,7 @@ from imutils.video.pivideostream import PiVideoStream
 from imutils.object_detection import non_max_suppression
 import imutils
 import time
-import datetime import detetime
+import datetime import datetime
 import numpy as np
 import cv2
 
