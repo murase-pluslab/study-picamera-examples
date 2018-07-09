@@ -60,7 +60,7 @@ class PersonDetector(object):
             persons += 1
         
         if persons > 0:
-        snprintf (str, 64, "persons=%d", persons);
+        snprintf (str, 64, 'persons=%d', persons);
         cv2.putText(persons,str,(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
             timestamp = datetime.now()
             if (timestamp - self.last_uploaded).seconds >= 30:
