@@ -57,7 +57,6 @@ class PersonDetector(object):
             cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)    
             persons += 1
         
-            cv2.putText(frame,'{}persons',(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
-                
+            cv2.putText(frame,'{} persons',(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
         
         return frame
