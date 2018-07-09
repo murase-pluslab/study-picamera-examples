@@ -3,7 +3,7 @@ from imutils.video.pivideostream import PiVideoStream
 from imutils.object_detection import non_max_suppression
 import imutils
 import time
-from datetime import datetime
+import datetime
 import numpy as np
 import cv2
 
@@ -16,15 +16,14 @@ class PersonDetector(object):
     def __init__(self, flip = True):
         self.vs = PiVideoStream(resolution=(800, 608)).start()
         self.flip = flip
-        self.last_uploaded = datetime.now()
         time.sleep(2.0)
         
     def __del__(self):
         self.vs.stop()
 
     def flip_if_needed(self, frame):
-#         if self.flip:
-#             return np.flip(frame, 0)
+        if self.flip:
+            return np.flip(frame, 0)
         return frame
 
     def get_frame(self):
@@ -34,17 +33,19 @@ class PersonDetector(object):
         return jpeg.tobytes()
 
     def process_image(self, frame):
-        persons = 0
         frame = imutils.resize(frame, width=300)
         (h, w) = frame.shape[:2]
         blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
         net.setInput(blob)
         detections = net.forward()
 
+        # 人数初期化
+        persons = 0
+        
         for i in np.arange(0, detections.shape[2]):
             confidence = detections[0, 0, i, 2]
 
-            if confidence < 0.5:
+            if confidence < 0.2:
                 continue
 
             idx = int(detections[0, 0, i, 1])
@@ -56,18 +57,9 @@ class PersonDetector(object):
             label = '{}: {:.2f}%'.format('Person', confidence * 100)
             cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
             y = startY - 15 if startY - 15 > 15 else startY + 15
-            cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)    
+            cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 155, 200), 1)
+            # 人数を加算
             persons += 1
-        
-        if persons > 0:
-        snprintf (str, 64, 'persons=%d', persons);
-        cv2.putText(img,str,(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
-            timestamp = datetime.now()
-            if (timestamp - self.last_uploaded).seconds >= 30:
-                cv2.imwrite("image.jpg", frame)
-                print('Uploading...')
-                upload(persons)
-                self.last_uploaded = timestamp
-                print('Finished.')
-        
+
+        cv2.putText(frame, '{} persons'.format(persons), (15,20),  cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
         return frame
