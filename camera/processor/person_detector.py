@@ -3,7 +3,7 @@ from imutils.video.pivideostream import PiVideoStream
 from imutils.object_detection import non_max_suppression
 import imutils
 import time
-import datetime
+import datetime import detetime
 import numpy as np
 import cv2
 
@@ -44,7 +44,7 @@ class PersonDetector(object):
         for i in np.arange(0, detections.shape[2]):
             confidence = detections[0, 0, i, 2]
 
-            if confidence < 0.2:
+            if confidence < 0.5:
                 continue
 
             idx = int(detections[0, 0, i, 1])
