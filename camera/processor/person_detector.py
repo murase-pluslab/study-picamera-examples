@@ -16,6 +16,7 @@ class PersonDetector(object):
     def __init__(self, flip = True):
         self.vs = PiVideoStream(resolution=(800, 608)).start()
         self.flip = flip
+        self.last_uploaded = datetime.now()
         time.sleep(2.0)
         
     def __del__(self):
