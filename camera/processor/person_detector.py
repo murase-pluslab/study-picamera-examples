@@ -56,16 +56,16 @@ class PersonDetector(object):
             y = startY - 15 if startY - 15 > 15 else startY + 15
             cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
                 
-#             persons += 1
-#             cv2.putText(img,persons,(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
+            persons += 1
+            cv2.putText(frame,persons,(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
 
-#         if persons > 0:
-#             timestamp = datetime.now()
-#             if (timestamp - self.last_uploaded).seconds >= 30:
-#                 cv2.imwrite("image.jpg", frame)
-#                 print('Uploading...')
-#                 upload(persons)
-#                 self.last_uploaded = timestamp
-#                 print('Finished.')
+        if persons > 0:
+            timestamp = datetime.now()
+            if (timestamp - self.last_uploaded).seconds >= 30:
+                cv2.imwrite("image.jpg", frame)
+                print('Uploading...')
+                upload(persons)
+                self.last_uploaded = timestamp
+                print('Finished.')
         
         return frame
